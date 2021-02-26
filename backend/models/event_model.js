@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const Comments = require("./comments_model.js");
 
+// Schema of location that contains coordinates
 const GeoSchema = new Schema({
     name: {
         type: String,
@@ -57,6 +58,7 @@ const eventSchema = new Schema({
         ref: Comments
     },
 
+    // event category => rso_event, private event, public event
     category: {
         type: String,
         required: true
