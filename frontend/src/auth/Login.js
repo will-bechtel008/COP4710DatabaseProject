@@ -1,51 +1,62 @@
-import React from 'react'
+//@flow strict
 
-export default class Login extends React.Component {
-    constructor(props) {
-        super(props);
+import * as React from 'react';
+import './Login.css';
+import LoginPopup from './LoginPopup.js';
+import SignupPopup from './SignupPopup.js';
+import ResendEmailPopup from './ResendEmailPopup.js';
+// import { verifyLogin } from '../globalComponents/apiCalls/verifyLogin.js';
+
+// Main login page. Front-page of Fortuna.
+class Login extends React.Component<{||}> {
+
+	constructor() {
+		super();
+    verifyLogin();
+	}
+
+	onEmailRegistered(registeredUsername: string, registeredPassword: string): void {
+		this.refs.loginPopup.onEmailRegistered(registeredUsername, registeredPassword);
+  }
+
+  componentDidMount() {
+    document.body.style.backgroundImage = "url('/events.png')"
+    document.body.style.fontFamily = "font-family: 'Press Start 2P', cursive;"
+  }
+
+	render(): React.Node {
 
 
-        this.state = {
-            username:'',
-            password: '',
-        }
-    }
 
-    handleChange = (e) => {
-        const {name, value} = e.target
-        this.setState({[name]:value})
-    }
 
-    handleSubmit = (e) => {
+		return (
+			<div>
+				<div className="column loginleft align-middle">
+				</div>
+				<div className="column loginmiddle">
+					<h1>FORTUNA</h1>
+					{/*<h6>Welcome Commander</h6>*/}
+					<br />
+					<br />
+					<br />
+					<br />
 
-    }
-
-    render() {
-        return (
-            <div>
-                <div>
-                    Log In
-                </div>
-                <div>
-                    <form onSubmit = {this.handleSubmit}>
-                        <input
-                            type='username'
-                            name='username'
-                            placeholder='username...'
-                            required
-                            onChange = {this.handleChange}
-                            />
-                        <input
-                            type='password'
-                            name='password'
-                            placeholder='password...'
-                            required
-                            onChange = {this.handleChange}
-                            />
-                        <button onSubmit={this.handleSubmit}>Log In</button>
-                    </form>
-                </div>
-            </div>
-        )
-    }
+					<div className="middlecolumn">
+						<LoginPopup ref="loginPopup" />
+						<br/>
+						<SignupPopup
+							onEmailRegisteredCallback={(email: string, password: string) => this.onEmailRegistered(email, password)}
+						/>
+						<br/>
+						<ResendEmailPopup/>
+					</div>
+				</div>
+        <div className="footer">
+          <p>Photo credit: <a href="https://www.artstation.com/artwork/GXwZgz">ArtStation</a></p>
+        </div>
+			</div>
+		);
+	}
 }
+
+export default Login;
