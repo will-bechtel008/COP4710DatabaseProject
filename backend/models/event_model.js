@@ -54,8 +54,7 @@ const eventSchema = new Schema({
 
     // comments about event
     comments : {
-        type: Schema.Types.ObjectId,
-        ref: Comments
+        type: [Schema.Types.Comments],
     },
 
     // event category => rso_event, private event, public event

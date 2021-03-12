@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const Event = require("./event_model.js");
 const RSO = require("./rso_model.js");
-const University = require("./university_model.js");
 
 const userSchema = new Schema({
   username: {
@@ -28,9 +28,29 @@ const userSchema = new Schema({
     ref: RSO
   },
 
+  publicEvents: {
+    type: [Schema.Types.Event],
+  },
+
+  privateEvents: {
+    type: [Schema.Types.Event],
+  },
+
   university: {
-    type: Schema.Types.ObjectId,
-    ref: University
+      name: {
+        type: String,
+      },
+      location: {
+        type: String,
+      },
+      desc: {
+        type: String,
+      },
+      numStudents: {
+        type: Number,
+        default: 0
+      },
+
   },
 });
 
