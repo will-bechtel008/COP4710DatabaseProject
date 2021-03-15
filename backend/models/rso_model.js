@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = require('mongodb').ObjectId; 
 const Event = require("./event_model.js");
 const User = require("./user_model.js");
 
@@ -8,16 +9,17 @@ const User = require("./user_model.js");
     RSO_Events
     Students Array
 */
-const rsoSchema = new Schema({
+
+var rsoSchema = new Schema({
     name: {
         type: String,
         required: true
     },
-    RSO_events: {
-        type: [Schema.Types.Event],
+    rsoEvents: {
+        type: [{type: ObjectId}],
     },
     members: {
-        type: [Schema.Types.User],
+        type: [{type: ObjectId}],
     },
 });
 

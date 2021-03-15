@@ -3,7 +3,7 @@ const { truncate } = require('fs');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Comments = require("./comments_model.js");
+const Comments = require("./comment_model.js");
 
 // Schema of location that contains coordinates
 const GeoSchema = new Schema({
@@ -50,7 +50,7 @@ const eventSchema = new Schema({
     },
 
     // location of event, see geoSchema
-    location: GeoSchema
+    location: GeoSchema,
 
     // comments about event
     comments : {

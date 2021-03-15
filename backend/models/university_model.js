@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = require('mongodb').ObjectId; 
 const Event = require("./event_model.js");
 const User = require("./user_model.js");
 
@@ -26,18 +27,18 @@ const universitySchema = new Schema({
     },
 
     privateEvents: {
-        type: [Schema.Types.Event],
+        type: [{type: ObjectId}],
     },
 
     publicEvents: {
-        type: [Schema.Types.Event],
+        type: [{type: ObjectId}],
     },
 
     students: {
-        type: [Schema.Types.User],
+        type: [{type: ObjectId}],
     },
 });
 
-const RSO = mongoose.model('University', universitySchema);
+const University = mongoose.model('University', universitySchema);
 
-module.exports = RSO;
+module.exports = University;

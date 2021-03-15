@@ -1,9 +1,14 @@
+// libraries and packages
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
-const User = require("../models/user_model.js");
 const jwt = require("jsonwebtoken");
+
+// models
+const User = require("../models/user_model.js");
 const RSO = require("../models/rso_model.js");
 const University = require("../models/university_model.js");
+
+// env config
 require("dotenv").config();
 
 // add user
@@ -12,6 +17,9 @@ router.post("/add", async (req, res) => {
     // read in data for predefined user
     const username = req.body.username;
     const password = req.body.password;
+    const type = req.body.type;
+    const rso = null
+    const university = null
 
     // username cannot be empty string
     if (username == '')
@@ -33,7 +41,7 @@ router.post("/add", async (req, res) => {
     const phash = await bcrypt.hash(password, encrptor);
 
     // create new user
-    const newUser = new User({ username, password: phash });
+    const newUser = new User({ username, password: phash , type, rso, university});
 
     // saves user
     newUser.save()
@@ -58,10 +66,10 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ msg: "Not all field information has been entered." })
 
     // check user
-    const userExists = await User.findOne({ username: username });
+    const user = await User.findOne({ username: username });
     
     // if user exists
-    if (!userExists)
+    if (!user)
       return res.status(400).json({ msg: "User does not exist." });
 
     // check password
@@ -78,7 +86,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user._id }, tokenKey);
 
     // login message
-    res.json({ token, user: { id: user._id, username: user.username } })
+    res.json({ token, user: { id: user._id, type: user.type, username: user.username } })
 
     // error handling
   } catch (err) {
