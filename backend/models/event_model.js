@@ -2,8 +2,7 @@ const { time } = require('console');
 const { truncate } = require('fs');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-const Comments = require("./comment_model.js");
+const ObjectId = require('mongodb').ObjectId; 
 
 // Schema of location that contains coordinates
 const GeoSchema = new Schema({
@@ -47,6 +46,7 @@ const eventSchema = new Schema({
     // date of event
     date: {
         type: Date,
+        default: Date.now()
     },
 
     // location of event, see geoSchema
@@ -54,7 +54,7 @@ const eventSchema = new Schema({
 
     // comments about event
     comments : {
-        type: [Schema.Types.Comments],
+        type: [{type: ObjectId}],
     },
 
     // event category => rso_event, private event, public event

@@ -11,7 +11,7 @@ const University = require("../models/university_model.js");
 // add public event to university
 router.post("/add", async (req, res) => {
     try {
-      // variables
+        // variables
         const userid = req.body.userid;
         const eventType = req.body.eventType;
         const eventName = req.body.eventName;
@@ -84,6 +84,42 @@ router.post("/add", async (req, res) => {
             const eventCreated = await RSO.findByIdAndUpdate((user.rso), {$push: {rsoEvents: id }});
             res.json('New rso event saved.')
         }
+            
+    // error handling
+    } catch (err) {
+    }
+});
+
+// add comment to event
+router.post("/comment", async (req, res) => {
+    try {
+      // variables
+        const userid = req.body.userid;
+        const eventid = req.body.eventid;
+        const text = req.body.text;
+        const rating = req.body.rating;
+        const timestamp = Date.now();
+        const id = mongoose.Types.ObjectId();
+
+        // check for user
+        const user = await User.findOne({ _id: userid });
+
+        // if user does not exist
+        if (!user)
+            return res.json('User does not exist.')
+  
+        // create new comment
+        const newComment = new Event({ _id: id, userid, text, rating, timestamp});
+
+        // saves comment
+        newComment.save()
+
+        // updates user info
+        const updateEvent = await Event.findByIdAndUpdate((eventid), {$push: {comments: id }})
+            
+        // university joined message
+        if (updateEvent)
+            res.json('Comment has been added to event.')
             
     // error handling
     } catch (err) {

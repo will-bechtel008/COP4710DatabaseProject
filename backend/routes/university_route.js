@@ -54,7 +54,8 @@ router.post("/add", async (req, res) => {
       const updateUniversity = await University.findByIdAndUpdate((id), {$push: {students: studentData }});
         
       // new university created message
-      res.json('User has created university.')
+      if (updateUser && updateUniversity)
+        res.json('User has created university.')
    
       // error handling
     } catch (err) {
@@ -99,7 +100,8 @@ router.post("/join", async (req, res) => {
     const updateUniversity = await University.findByIdAndUpdate((universityid), {$push: {students: studentData }});
      
     // university joined message
-    res.json('User has joined university.')
+    if (updateUser && updateUniversity)
+      res.json('User has joined university.')
      
     // error handling
   } catch (err) {

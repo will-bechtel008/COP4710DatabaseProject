@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId; 
 
 // models
-const RSO = require("../models/rso_model.js");
 const User = require("../models/user_model.js");
+const RSO = require("../models/rso_model.js");
 
 // add rso
 router.post("/add", async (req, res) => {
@@ -52,7 +52,8 @@ router.post("/add", async (req, res) => {
       const updateRSO = await RSO.findByIdAndUpdate((id), {$push: {members: memberData }});
 
       // new rso message
-      res.json('New RSO has been added.')
+      if (updateUser && updateRSO)
+        res.json('New RSO has been added.')
 
       // error handling
     } catch (err) {
@@ -95,8 +96,9 @@ router.post("/join", async (req, res) => {
     // updates rso info
     const updateRSO = await RSO.findByIdAndUpdate((rsoid), {$push: {members: memberData }});
 
-    // new university message
-    res.json('User has joined rso.')
+    // join rso message
+    if (updateUser && updateRSO)
+      res.json('User has joined rso.')
 
     // error handling
   } catch (err) {
