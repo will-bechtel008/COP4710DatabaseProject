@@ -32,3 +32,7 @@ mongoose.connect(Database, { useNewUrlParser: true, useUnifiedTopology: true, us
 );
 
 app.use("/users", require("./routes/user_route.js"));
+app.use("/comment", require("./routes/comment_route.js"));
+app.use("/event", require("./routes/event_route.js"));
+app.use("/rso", require("./routes/rso_route.js"));
+app.use("/university", require("./routes/university_route.js"));
