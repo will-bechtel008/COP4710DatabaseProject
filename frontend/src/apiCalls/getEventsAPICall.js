@@ -2,7 +2,7 @@ import EventObject from '../typesAndClasses/EventObject.js';
 
 // TODO(me): finish transitioning to the current project
 function getAllEvents(userId: string, onLoad:(list: Array<EventObject>) => void): void {
-	const  responsePromise: Promise<Response> = fetch('/api/marketplace/getMarketSales/' + userId, {
+	const  responsePromise: Promise<Response> = fetch('/api/events/getEvents/' + userId, {
 		method: 'GET',
 		headers: {
 			'Access-Control-Allow-Origin': '*',
@@ -15,37 +15,19 @@ function getAllEvents(userId: string, onLoad:(list: Array<EventObject>) => void)
 			if (response.status !== 200) {
 				console.log(response.status);
 				console.log(data);
-				toast.error(getErrorFromObject(data));
 			}
 			else {
-				const itemsForSale: Array<SaleObject> = [];
-				for(const sale of data) {
-					if (sale.itemType === 'casus') {
-						itemsForSale.push(new SaleObject(
-							sale.itemId,
-							sale.salePrice,
-							sale.amount,
-							sale.sellerId,
-							sale._id,
-							true,
-							sale.itemDesc,
-							null
+				const eventsToDisplay: Array<EventObject> = [];
+				for(const event of data) {
+						itemsForSale.push(new EventObject(
+							event.name,
+							event.date,
+							event.org,
+							event.location,
+							event.comments
 						));
-					}
-					else {
-						itemsForSale.push(new SaleObject(
-							sale.itemId,
-							sale.salePrice,
-							sale.amount,
-							sale.sellerId,
-							sale._id,
-							false,
-							sale.itemDesc,
-							null
-						));
-					}
 				}
-				onLoad(itemsForSale);
+				onLoad(eventsToDisplay);
 			}
 		})
 	);

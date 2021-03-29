@@ -1,11 +1,11 @@
 //@flow strict
-
+import Comment from './CommentObject'
 class EventObject {
 	name: string;
     date: String;
 	org: string;
 	location: string;
-	comments: Array<String>;
+	comments: Array<Comment>;
 
 	constructor(name: string, date: String, org: string, location: string, comments: Array<String>) {
 		this.name = name;

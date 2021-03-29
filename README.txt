@@ -5,6 +5,9 @@ Run: npx create-react-app frontend
 cop4710_project/backend
 Run: npm install express cors mongoose dotenv bcryptjs jsonwebtoken
 
+cop4710_project/frontend
+Run: npm install npm install @material-ui/core express react-router-dom axios
+
 check git status
 ================
 $ git status
