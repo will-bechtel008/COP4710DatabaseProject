@@ -7,12 +7,25 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import EventObject from '../typesAndClasses/EventObject.js';
+import getAllEvents from '../apiCalls/getEventsAPICall.js';
+
+// state={
+//   userId: String,
+//   events: Array<EventObject>
+// }
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
+
+function getEvents(userId) {
+  getAllEvents(userId, list => {
+    this.setState({events: list});
+  })
+}
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
