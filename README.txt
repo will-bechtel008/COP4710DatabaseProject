@@ -2,6 +2,22 @@ Create main directory cop4710_project
 In this directory run
 Run: npx create-react-app frontend
 
+*NEW*
+Make files added to make building and running dev easier than ever
+
+of course, install make if you do not have it on your system.
+
+# installs build tools, including make
+$ sudo apt-get install build-essential
+
+# installs npm dependencies
+$ make build-dev
+
+# runs frontend and backend
+$ make run-dev
+
+
+
 cop4710_project/backend
 Run: npm install express cors mongoose dotenv bcryptjs jsonwebtoken
 

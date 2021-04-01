@@ -93,5 +93,79 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// get organizations
+router.get("/organizations", async (req, res) => {
+  try {
+    // search for user information
+    const rsos = await RSO.find();
+    const universities = await University.find();
+
+   // return user data
+   // return savings data
+   // return checking data
+   res.json(
+     {
+        rsos: rsos, 
+        universities: universities, 
+     });
+
+    // error handling
+  } catch (err) {
+  }
+});
+
+// get events
+router.get("/events", async (req, res) => {
+  try {
+    // userid
+    const userid = req.body.userid;
+
+    // get user data
+    const user = await User.findById(userid);
+
+    let university = null
+    let rso = null
+    let publicEvents = null
+    let privateEvents = null
+    let rsoEvents = null
+    
+    console.log("HERE1")
+    console.log(user.university)
+
+    // get university info
+    if (user.university)
+      university = await University.findOne({ _id: user.university });
+      
+    console.log("HERE2")
+    
+      // get rso info
+    if (user.rso)
+      rso = await RSO.findOne({ _id: user.rso });
+    
+    console.log("HERE3")
+    
+    // public events
+    publicEvents = await Event.find(eventType === 'public_event');
+    console.log("HERE4")
+    // private events
+    privateEvents = await Event.find(eventType === 'private_event');
+
+    // rso events
+    rsoEvents = await Event.find(eventType === 'rso_event');
+    
+    res.json(
+      {
+        publicEvents: publicEvents,
+        privateEvents: privateEvents,
+        rsoEvents: rsoEvents,
+      });
+
+    // error handling
+  } catch (err) {
+  }
+});
+
+
+
 // export
 module.exports = router;
