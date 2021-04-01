@@ -60,27 +60,48 @@ router.post("/add", async (req, res) => {
         if (eventType == "rso_event" && user.rso == null) {
             return res.json('Missing rso data.')
         }
-  
-        // create new event
-        const newEvent = new Event({ _id: id, eventName, desc, date, category: eventType});
-
-        // saves event
-        newEvent.save()
 
         // update public events
         if (eventType == "public_event") {
+            // user university
+            const userUniversity = await University.findOne({ _id: user.university })
+            
+            // create new event
+            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userUniversity.name});
+
+            // saves event
+            newEvent.save()
+            
             const eventCreated = await University.findByIdAndUpdate((user.university), {$push: {publicEvents: id }});
             res.json('New public event saved.')
         } 
         
         // update private events
         if (eventType == "private_event") {
+            // user university
+            const userUniversity = await University.findOne({ _id: user.university })
+            
+            // create new event
+            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userUniversity.name});
+
+            // saves event
+            newEvent.save()
+
             const eventCreated = await University.findByIdAndUpdate((user.university), {$push: {privateEvents: id }});
             res.json('New private event saved.')
         }
         
         // update rso events
         if (eventType == "rso_event") {
+            // user university
+            const userRSO = await RSO.findOne({ _id: user.rso })
+    
+            // create new event
+            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userRSO.name});
+
+            // saves event
+            newEvent.save()
+
             const eventCreated = await RSO.findByIdAndUpdate((user.rso), {$push: {rsoEvents: id }});
             res.json('New rso event saved.')
         }
@@ -89,43 +110,6 @@ router.post("/add", async (req, res) => {
     } catch (err) {
     }
 });
-
-// add comment to event
-router.post("/comment", async (req, res) => {
-    try {
-      // variables
-        const userid = req.body.userid;
-        const eventid = req.body.eventid;
-        const text = req.body.text;
-        const rating = req.body.rating;
-        const timestamp = Date.now();
-        const id = mongoose.Types.ObjectId();
-
-        // check for user
-        const user = await User.findOne({ _id: userid });
-
-        // if user does not exist
-        if (!user)
-            return res.json('User does not exist.')
-  
-        // create new comment
-        const newComment = new Event({ _id: id, userid, text, rating, timestamp});
-
-        // saves comment
-        newComment.save()
-
-        // updates user info
-        const updateEvent = await Event.findByIdAndUpdate((eventid), {$push: {comments: id }})
-            
-        // university joined message
-        if (updateEvent)
-            res.json('Comment has been added to event.')
-            
-    // error handling
-    } catch (err) {
-    }
-});
-
 
 // export
 module.exports = router;

@@ -47,13 +47,13 @@ router.post("/add", async (req, res) => {
       
       // member data
       const memberData = ObjectId(userid);
-
+      
       // updates rso info
-      const updateRSO = await RSO.findByIdAndUpdate((id), {$push: {members: memberData }});
+      const updateRSO = await RSO.findByIdAndUpdate((id), {$push: { members: memberData }});
 
       // new rso message
       if (updateUser && updateRSO)
-        res.json('New RSO has been added.')
+      res.json('New RSO has been added.')
 
       // error handling
     } catch (err) {
