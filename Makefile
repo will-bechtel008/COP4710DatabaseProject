@@ -1,7 +1,7 @@
 build-dev:
-	cd frontend_fortuna_v2 && $(MAKE) build-dev
-	cd backend_fortuna_v2 && $(MAKE) build
+	cd frontend && $(MAKE) build-dev
+	cd backend && $(MAKE) build-dev
 
 run-dev:
 	cd frontend && $(MAKE) run-dev
-	cd backend &&$(MAKE) run-dev
+	cd backend && $(MAKE) run-dev
