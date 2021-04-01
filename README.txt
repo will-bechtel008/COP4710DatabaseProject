@@ -16,7 +16,7 @@ $ make build-dev
 # runs frontend and backend
 $ make run-dev
 
-
+# Normally we would ignore the .env files as they should remain hidden, but as this is a small project for class, it is not a priority.
 
 cop4710_project/backend
 Run: npm install express cors mongoose dotenv bcryptjs jsonwebtoken
