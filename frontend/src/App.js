@@ -1,7 +1,7 @@
 import './App.css';
 import * as React from 'react'
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
-import Login from './auth/Login.js'
+import Login from './login/Login.js'
 import Events from './events/Events.js'
 import Orgs from './orgs/Orgs.js'
 
