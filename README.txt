@@ -22,7 +22,7 @@ cop4710_project/backend
 Run: npm install express cors mongoose dotenv bcryptjs jsonwebtoken
 
 cop4710_project/frontend
-Run: npm install npm install @material-ui/core express react-router-dom axios react-scripts
+Run: npm install npm install @material-ui/core express react-router-dom axios react-scripts google-map-react reactjs-popup
 
 check git status
 ================
