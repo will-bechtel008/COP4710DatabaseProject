@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 // models
 const User = require("../models/user_model.js");
 const RSO = require("../models/rso_model.js");
+const Event = require("../models/event_model.js");
 const University = require("../models/university_model.js");
 
 // env config
@@ -24,14 +25,14 @@ router.post("/add", async (req, res) => {
     // username cannot be empty string
     if (username == '')
         return res.status(400).json({ msg: "Username cannot be empty string." })
-    
+
     // password cannot be empty string
     if (password == '')
         return res.status(400).json({ msg: "Password cannot be empty string." })
 
     // check user
     const userExists = await User.findOne({ username: username })
-    
+
     // if user already exists
     if (userExists)
         return res.status(400).json({ msg: "User already exists." })
@@ -117,48 +118,13 @@ router.get("/organizations", async (req, res) => {
 // get events
 router.get("/events", async (req, res) => {
   try {
-    // userid
-    const userid = req.body.userid;
+    // search for user information
+    const events = await Event.find();
 
-    // get user data
-    const user = await User.findById(userid);
-
-    let university = null
-    let rso = null
-    let publicEvents = null
-    let privateEvents = null
-    let rsoEvents = null
-    
-    console.log("HERE1")
-    console.log(user.university)
-
-    // get university info
-    if (user.university)
-      university = await University.findOne({ _id: user.university });
-      
-    console.log("HERE2")
-    
-      // get rso info
-    if (user.rso)
-      rso = await RSO.findOne({ _id: user.rso });
-    
-    console.log("HERE3")
-    
-    // public events
-    publicEvents = await Event.find(eventType === 'public_event');
-    console.log("HERE4")
-    // private events
-    privateEvents = await Event.find(eventType === 'private_event');
-
-    // rso events
-    rsoEvents = await Event.find(eventType === 'rso_event');
-    
-    res.json(
-      {
-        publicEvents: publicEvents,
-        privateEvents: privateEvents,
-        rsoEvents: rsoEvents,
-      });
+   res.json(
+     {
+        events: events,
+     });
 
     // error handling
   } catch (err) {
