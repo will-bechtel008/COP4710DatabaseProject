@@ -4,6 +4,7 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Login from './login/Login.js'
 import Events from './events/Events.js'
 import Orgs from './orgs/Orgs.js'
+import Map from './events/Map.js'
 import UserSession from './session/UserSession';
 import Axios from 'axios'
 
@@ -57,7 +58,7 @@ export default function App() {
       <BrowserRouter>
           <UserSession.Provider value = {{ userData, setUserData }}>
                   <Switch>
-                      <Route exact path = "/" component = {Login} />
+                      <Route exact path = "/" component = {Map} />
                       <Route exact path = "/events" component = {Events} />
                       <Route exact path = "/orgs" component = {Orgs} />
                   </Switch>

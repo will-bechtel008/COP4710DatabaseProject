@@ -20,6 +20,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 // Create Event Component
 import CreateEvent from './CreateEvent';
+import Map from './Map.js'
 
 const useRowStyles = makeStyles({
   root: {
@@ -135,6 +136,7 @@ export default function Events() {
     <div>
       <h1 className='h1'>EVENTS</h1>
       <CreateEvent className='middlecolumn'/>
+      <Map />
       <TableContainer component={Paper} className='table'>
         <Table aria-label="collapsible table">
           <TableHead>

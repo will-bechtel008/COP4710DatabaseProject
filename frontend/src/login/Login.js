@@ -50,6 +50,7 @@ export default function Login() {
           // is used so that buttons are corrected
           // by reseting the buttons in the Button.js file are adjusted
           window.location.reload();
+          
         }
 
         // error handling
