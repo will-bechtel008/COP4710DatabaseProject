@@ -27,8 +27,12 @@ const Database = process.env.MONGODB_CONNECTION_STRING;
 // set up our mongoose
 mongoose.connect(Database, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false }, (err) => {
         if (err) throw err;
-        console.log("Connection Established with MongoDB Databse.");
+        console.log("Connection Established with MongoDB Database.");
     }
 );
 
 app.use("/users", require("./routes/user_route.js"));
+app.use("/comment", require("./routes/comment_route.js"));
+app.use("/event", require("./routes/event_route.js"));
+app.use("/rso", require("./routes/rso_route.js"));
+app.use("/university", require("./routes/university_route.js"));
