@@ -21,6 +21,10 @@ export default function Login() {
   // stores uer input for password
   const [password, inputPassword] = useState();
 
+  const onClick = () => {
+    window.location = '/register'
+  }
+
   // login attempt
   const submit = async (e) => {
     try{
@@ -36,10 +40,13 @@ export default function Login() {
           const loginAttempt = await Axios.post(postRequest, user);
 
           localStorage.setItem("login_token", loginAttempt.data.userid);
+          localStorage.setItem("userType", loginAttempt.data.userType);
+          console.log("local storage: ", localStorage.getItem('login_token'));
+          console.log("local storage: ", localStorage.getItem('userType'));
 
           history.push("/");
 
-          window.location.reload();
+          window.location = '/events';
 
         }
 
@@ -61,6 +68,10 @@ export default function Login() {
 
         <input type = "submit" value = "LOGIN"/>
       </form>
+      Don't have an Account? 
+      <button onClick={() => onClick()}>
+        Sign Up.
+      </button>
     </div>
   );
 }

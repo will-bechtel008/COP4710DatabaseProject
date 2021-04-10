@@ -2,6 +2,7 @@ import './App.css';
 import {React, useEffect, useState} from 'react'
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Login from './login/Login.js'
+import Register from './login/Register.js'
 import Events from './events/Events.js'
 import Orgs from './orgs/Orgs.js'
 import Map from './events/Map.js'
@@ -27,26 +28,7 @@ export default function App() {
               // set token in this useEffect to emty string
               token = "";
           }
-
-          // const getUserInfo = "http://localhost:5000/userinfo/"
-          const getOrgs = "http://localhost:5000/users/organizations";
-          // const getEvents =  "http://localhost:5000/users/events";
-
-          if (token !== '') {
-            // gets user data from system
-            //const userCheck = await Axios.get(getUserInfo, { headers: { "login_token": token }});
-            const orgsCheck = await Axios.get(getOrgs);
-           // const eventsCheck = await Axios.get(getEvents, { userid: userCheck.data.userid });
-            // console.log("token: ", token);
-            // console.log("user: ", userCheck.data);
-            // console.log("orgs: ", orgsCheck.data);
-            // console.log("events: ", eventsCheck.data);
-
-              // this sets the userdata for the session to the information retrieved from the backend of the system
-              setUserData({ token, orgs: orgsCheck.data});
-              // setUserData({ token, user: userCheck.data, orgs: orgsCheck.data, events: eventsCheck.data });
-            }
-          };
+        };
 
       // perform check
       checkLoginStatus();
@@ -58,7 +40,8 @@ export default function App() {
       <BrowserRouter>
           <UserSession.Provider value = {{ userData, setUserData }}>
                   <Switch>
-                      <Route exact path = "/" component = {Map} />
+                      <Route exact path = "/" component = {Login} />
+                      <Route exact path = "/register" component = {Register} />
                       <Route exact path = "/events" component = {Events} />
                       <Route exact path = "/orgs" component = {Orgs} />
                   </Switch>

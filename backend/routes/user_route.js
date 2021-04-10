@@ -82,7 +82,7 @@ router.post("/login", async (req, res) => {
 
 
     // login message
-    res.json({ userid: user._id })
+    res.json({ userid: user._id, userType: user.type})
 
     // error handling
   } catch (err) {

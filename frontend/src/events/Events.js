@@ -1,6 +1,6 @@
 import React from 'react';
 import './Events.css'
-
+import Logout from '../login/Logout.js'
 // table formatting
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -135,9 +135,9 @@ export default function Events() {
   const getEvents =  "http://localhost:5000/users/events";
   return (
     <div>
+      <Logout />
       <h1 className='h1'>EVENTS</h1>
       <CreateEvent className='middlecolumn'/>
-      <Map />
       <TableContainer component={Paper} className='table'>
         <Table aria-label="collapsible table">
           <TableHead>

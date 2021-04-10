@@ -16,7 +16,7 @@ router.post("/add", async (req, res) => {
         const eventType = req.body.eventType;
         const eventName = req.body.eventName;
         const desc = req.body.desc;
-        const date = Date.now();
+        const date = req.body.date;
         const id = mongoose.Types.ObjectId();
 
         // check for user

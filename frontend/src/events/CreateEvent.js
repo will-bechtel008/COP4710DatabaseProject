@@ -4,6 +4,7 @@ import './Events.css'
 
 // User info api (?)
 import getUser from '../globalComponents/apiCalls/getUser.js';
+import axios from 'axios';
 
 type Props = {||};
 
@@ -16,50 +17,33 @@ type State = {|
     eventDialogOpen: boolean
     |};
 
+
+async function createNewEvent(userid, eventType, eventName, desc, date) {
+    try {
+        const postReq = 'http://localhost:5000/event/add';
+        const newEvent = await axios.post(postReq, {userid, eventType, eventName, desc, date});
+        console.log(newEvent);
+        return newEvent;
+}
+    catch (err) {};
+    }
 class CreateEvent extends React.Component {
 
     constructor() {
         super();
 
         this.state = {
-            userId: '',
-            name:'',
-            time:'',
+            eventType: '',
+            eventName:'',
+            desc: '',
             date:'',
-            org: '',
             eventDialogOpen: false
         }
     }
 
     handleCreateEventClick(): void {
-
-		const responsePromise: Promise<Response> = fetch('/api/event', {
-			method: 'POST',
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Content-Type': 'application/json',
-				'Access-Control-Allow-Credentials': 'true'
-			},
-			body: JSON.stringify({ name: this.state.name, time: this.state.time, date: this.state.date, org: this.state.org }),
-		});
-		responsePromise.then(
-			response => response.json().then(data => {
-				if (response.status !== 200) {
-					console.log(response.status);
-					console.log(data);
-				}
-				else {
-                    // need to fix
-					// setLoginToken(data.token);
-					// window.location=verifyLink('/MainMenu');
-				}
-			})
-		).catch(
-			(error) => {
-				console.error('Could not connect to server!');
-				console.log(error);
-			}
-		);
+        createNewEvent(localStorage.getItem('login_token'), this.state.eventType, this.state.eventName, this.state.desc, this.state.date);
+        // window.location.reload();
 	};
 
     handleCancelClick(): void {
@@ -67,9 +51,7 @@ class CreateEvent extends React.Component {
 	}
 
     render(): React.Node {
-        const userType = 'admin'
-        const userRso = 'blah supremacy'
-
+        const userType = localStorage.getItem('userType');
         const createEventButton = (
             <button className='button' onClick={() => this.handleCreateEventClick()}>
                 Create Event
@@ -97,17 +79,16 @@ class CreateEvent extends React.Component {
                             <div className='popup-content'>
                                 <img src='user.png' alt='User'/>
                                 <label className='label'>Event Title:</label>
-                                <input type='text' placeholder='Event Title' value={this.state.name} onChange={e => this.setState({name: e.target.value})}/>
+                                <input type='text' placeholder='Event Title' value={this.state.eventName} onChange={e => this.setState({eventName: e.target.value})}/>
 
-                                <label className='label'>Time and Date:</label>
-                                <input type='text' placeholder='i.e. 7:00 PM' value={this.state.time} onChange={e => this.setState({time: e.target.value})}/>
+                                <label className='label'>Date:</label>
                                 <input type='date' placeholder='mm-dd-yyyy' value={this.state.date} min='2021-04-04' max='2060-01-01' onChange={e => this.setState({date: e.target.value})}/>
 
                                 <label className='label'>Type of Event:</label>
-                                <select placeholder='i.e. Pulbic, Private...' onChange={e => this.setState({type: e.target.value})}>
-                                    <option value='Public Event'>Public Event</option>
-                                    <option value='Private Event'>Private Event</option>
-                                    <option value={userRso}>RSO Event</option>
+                                <select placeholder='i.e. Pulbic, Private...' value={this.state.eventType} onChange={e => this.setState({eventType: e.target.value})}>
+                                    <option value='public_event'>Public Event</option>
+                                    <option value='private_event'>Private Event</option>
+                                    <option value='rso_event'>RSO Event</option>
                                 </select>
 
 
