@@ -214,6 +214,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Orgs() {
+  const getOrgs = "http://localhost:5000/users/organizations";
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');

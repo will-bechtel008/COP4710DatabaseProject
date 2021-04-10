@@ -132,6 +132,7 @@ const rows = [
 ];
 
 export default function Events() {
+  const getEvents =  "http://localhost:5000/users/events";
   return (
     <div>
       <h1 className='h1'>EVENTS</h1>

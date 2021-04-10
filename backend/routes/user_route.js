@@ -80,14 +80,9 @@ router.post("/login", async (req, res) => {
     if (!passwordCheck)
       return res.status(400).json({ msg: "Incorrect Password." });
 
-    // use token key from env file
-    const tokenKey = process.env.KEY;
-
-    // jason web token for login verification
-    const token = jwt.sign({ id: user._id }, tokenKey);
 
     // login message
-    res.json({ token, user: { id: user._id, type: user.type, username: user.username } })
+    res.json({ userid: user._id })
 
     // error handling
   } catch (err) {

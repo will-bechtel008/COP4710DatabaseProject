@@ -7,6 +7,9 @@ const Comment = require("../models/comment_model.js");
 const Event = require("../models/event_model.js");
 const User = require("../models/user_model.js");
 
+// object id
+const ObjectId = require('mongodb').ObjectId; 
+
 // add comment to event
 router.post("/add", async (req, res) => {
     try {
@@ -29,14 +32,72 @@ router.post("/add", async (req, res) => {
         const newComment = new Comment({ _id: id, userid, text, rating, timestamp});
 
         // saves comment
-        //newComment.save()
+        newComment.save()
 
-        // updates user info
+        // updates event
         const updateEvent = await Event.findByIdAndUpdate((eventid), {$push: {comments: newComment }})
             
-        // university joined message
-        if (updateEvent)
-            res.json('Comment has been added to event.')
+        res.json('Comment has been added to event.')
+            
+    // error handling
+    } catch (err) {
+    }
+});
+
+// update comment
+router.post("/update", async (req, res) => {
+    try {
+      // variables
+      const userid = req.body.userid;
+      const eventid = req.body.eventid;
+      const commentid = req.body.commentid;
+      const text = req.body.text;
+      const rating = req.body.rating;
+      const timestamp = Date.now();
+
+        // check for user
+        const user = await User.findOne({ _id: userid });
+
+        // if user does not exist
+        if (!user)
+            return res.json('User does not exist.')
+
+        // update comment
+        const updatedComment = await Comment.findByIdAndUpdate((commentid), { userid, text, rating, timestamp});
+
+        // updates event by removing old comment
+        const removeEvent = await Event.findByIdAndUpdate((eventid), {$pull: {comments: {_id: ObjectId(commentid) }}})
+
+        // updates event by adding new comment
+        const addEvent = await Event.findByIdAndUpdate((eventid), {$push: {comments: updatedComment }})
+
+        // removed  message
+        res.json('Comment has been updated.')
+                
+    // error handling
+    } catch (err) {
+    }
+});
+
+// delete comment
+router.post("/delete", async (req, res) => {
+    try {
+      // variables
+        const userid = req.body.userid;
+        const eventid = req.body.eventid;
+        const commentid = req.body.commentid;
+
+        // check for user
+        const user = await User.findOne({ _id: userid });
+
+        // if user does not exist
+        if (!user)
+            return res.json('User does not exist.')
+
+        // updates event
+        const updateEvent = await Event.findByIdAndUpdate((eventid), {$pull: {comments: {_id: ObjectId(commentid) }}})
+
+        res.json('Comment has been deleted.')
             
     // error handling
     } catch (err) {
