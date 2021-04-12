@@ -68,7 +68,7 @@ class CreateEvent extends React.Component {
         {
             return (
                 <div>
-                    <button type='button' className='create-event-btn' onClick={() => this.setState({eventDialogOpen: true})}>
+                    <button className='event_button' onClick={() => this.setState({eventDialogOpen: true})}>
                         Create New Event Here!
                     </button>
                     <Popup

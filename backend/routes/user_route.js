@@ -113,13 +113,45 @@ router.get("/organizations", async (req, res) => {
 // get events
 router.get("/events", async (req, res) => {
   try {
-    // search for user information
-    const events = await Event.find();
+    // userid
+    const userid = req.body.userid;
 
-   res.json(
-     {
-        events: events,
-     });
+    // get user data
+    const user = await User.findById(userid);
+
+    let university = null
+    let rso = null
+    let publicEvents = null
+    let privateEvents = null
+    let rsoEvents = null
+
+    // log users uni and rso
+    console.log(user.university)
+    console.log(user.rso)
+
+    // get public events
+    publicEvents = await Event.find({eventType: 'public_event'});
+
+    // get university info
+    // and private events
+    if (user.university) {
+      university = await University.findOne({ _id: user.university });
+      privateEvents = await Event.find({eventType: 'private_event', org: university.name});
+    }
+
+    // get rso info
+    // and get rso events
+    if (user.rso) {
+      rso = await RSO.findOne({ _id: user.rso });
+      rsoEvents = await Event.find({eventType: 'rso_event', org: rso.name});
+    }
+
+    res.json(
+      {
+        publicEvents: publicEvents,
+        privateEvents: privateEvents,
+        rsoEvents: rsoEvents,
+      });
 
     // error handling
   } catch (err) {

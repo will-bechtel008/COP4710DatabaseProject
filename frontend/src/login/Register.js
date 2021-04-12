@@ -1,7 +1,6 @@
 import { React, useState } from "react";
-
 import { useHistory } from "react-router-dom";
-
+import './Login.css'
 import Axios from "axios";
 
 export default function Register() {
@@ -32,24 +31,24 @@ export default function Register() {
   };
 
   return (
-    <div className = "page">
-      <h2>Registration</h2>
-      <form className = "login_form" onSubmit = {submit}>
+    <div className = "center">
+      <h2 className = "center">Registration</h2>
+      <form  className = "center" onSubmit = {submit}>
 
-        <label htmlFor = "login_username">Username</label>
+        <label className = "center" htmlFor = "login_username">Username</label>
         <input id = "login_username" type = "username" onChange = { (e) => inputUsername(e.target.value) }/>
-
-        <label htmlFor = "login_password">Password</label>
+        <br></br>
+        <label className = "center" htmlFor = "login_password">Password</label>
         <input id = "login_password" type = "password" onChange = { (e) => inputPassword(e.target.value) }/>
-
-        <label className='label'>User Type:</label>
+        <br></br>
+        <label className = "center" className='center'>User Type:</label>
           <select type ='type' onChange={(e) => inputType(e.target.value) }>
               <option value='normal'>Normal User</option>
               <option value='admin'>Admin</option>
               <option value='superadmin'>Super Admin</option>
           </select>
-
-        <input type = "submit" value = "REGISTER"/>
+          <br></br>
+        <input className='btn' type = "submit" value = "REGISTER"/>
       </form>
     </div>
   );
