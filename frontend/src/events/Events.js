@@ -136,6 +136,9 @@ export default function Events() {
   return (
     <div>
       <Logout />
+      <button className='orgs_button' onClick={() => {window.location = '/orgs'}}>
+        Find Universities and organizations
+      </button>
       <h1 className='h1'>EVENTS</h1>
       <CreateEvent className='middlecolumn'/>
       <TableContainer component={Paper} className='table'>

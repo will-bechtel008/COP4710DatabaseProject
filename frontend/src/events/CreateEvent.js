@@ -1,9 +1,6 @@
 import React from 'react';
 import Popup from 'reactjs-popup';
 import './Events.css'
-
-// User info api (?)
-import getUser from '../globalComponents/apiCalls/getUser.js';
 import axios from 'axios';
 
 type Props = {||};
@@ -24,9 +21,10 @@ async function createNewEvent(userid, eventType, eventName, desc, date) {
         const newEvent = await axios.post(postReq, {userid, eventType, eventName, desc, date});
         console.log(newEvent);
         return newEvent;
-}
-    catch (err) {};
     }
+    catch (err) {
+    };
+}
 class CreateEvent extends React.Component {
 
     constructor() {
@@ -43,7 +41,7 @@ class CreateEvent extends React.Component {
 
     handleCreateEventClick(): void {
         createNewEvent(localStorage.getItem('login_token'), this.state.eventType, this.state.eventName, this.state.desc, this.state.date);
-        // window.location.reload();
+        window.location.reload();
 	};
 
     handleCancelClick(): void {

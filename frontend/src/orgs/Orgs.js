@@ -282,6 +282,7 @@ export default function Orgs() {
 
   return (
     <div className={classes.root}>
+      <CreateOrg/>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
