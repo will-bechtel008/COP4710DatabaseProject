@@ -90,7 +90,7 @@ router.post("/login", async (req, res) => {
 });
 
 // get organizations
-router.get("/organizations", async (req, res) => {
+router.post("/organizations", async (req, res) => {
   try {
     // search for user information
     const rsos = await RSO.find();
@@ -111,7 +111,7 @@ router.get("/organizations", async (req, res) => {
 });
 
 // get events
-router.get("/events", async (req, res) => {
+router.post("/events", async (req, res) => {
   try {
     // userid
     const userid = req.body.userid;
@@ -124,6 +124,7 @@ router.get("/events", async (req, res) => {
     let publicEvents = null
     let privateEvents = null
     let rsoEvents = null
+    let EventData = null
 
     // log users uni and rso
     console.log(user.university)
@@ -146,11 +147,16 @@ router.get("/events", async (req, res) => {
       rsoEvents = await Event.find({eventType: 'rso_event', org: rso.name});
     }
 
+    EventData = (publicEvents.concat(privateEvents)).concat(rsoEvents)
+
+    console.log(EventData)
+
     res.json(
       {
         publicEvents: publicEvents,
         privateEvents: privateEvents,
         rsoEvents: rsoEvents,
+        Events: EventData
       });
 
     // error handling

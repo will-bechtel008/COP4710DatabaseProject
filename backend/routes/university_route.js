@@ -23,7 +23,7 @@ router.post("/add", async (req, res) => {
       // if user does not exist
       if (!user)
         return res.json('User does not exist.')
-      
+
       // save usertype
       const userType = user.type;
 

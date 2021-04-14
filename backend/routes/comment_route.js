@@ -29,7 +29,7 @@ router.post("/add", async (req, res) => {
             return res.json('User does not exist.')
   
         // create new comment
-        const newComment = new Comment({ _id: id, userid, text, rating, timestamp});
+        const newComment = new Comment({ _id: id, userid: userid, text, rating, timestamp});
 
         // saves comment
         newComment.save()
@@ -62,14 +62,17 @@ router.post("/update", async (req, res) => {
         if (!user)
             return res.json('User does not exist.')
 
+        // create new comment
+        const newComment = new Comment({ _id: commentid, userid: userid, text, rating, timestamp });
+
         // update comment
-        const updatedComment = await Comment.findByIdAndUpdate((commentid), { userid, text, rating, timestamp});
+        const updatedComment = await Comment.findByIdAndUpdate((commentid), {_id: commentid, userid: userid, text, rating, timestamp});
 
         // updates event by removing old comment
         const removeEvent = await Event.findByIdAndUpdate((eventid), {$pull: {comments: {_id: ObjectId(commentid) }}})
 
         // updates event by adding new comment
-        const addEvent = await Event.findByIdAndUpdate((eventid), {$push: {comments: updatedComment }})
+        const addEvent = await Event.findByIdAndUpdate((eventid), {$push: {comments: newComment }})
 
         // removed  message
         res.json('Comment has been updated.')
