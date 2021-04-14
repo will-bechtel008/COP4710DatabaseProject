@@ -8,7 +8,7 @@ const range = len => {
   return arr
 }
 
-const newPerson = () => {
+const newEvent = () => {
   const statusChance = Math.random()
   return {
     firstName: namor.generate({ words: 1, numbers: 0 }),
@@ -30,7 +30,7 @@ export default function makeData(...lens) {
     const len = lens[depth]
     return range(len).map(d => {
       return {
-        ...newPerson(),
+        ...newEvent(),
         subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
       }
     })

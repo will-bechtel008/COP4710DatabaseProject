@@ -65,20 +65,19 @@ function Table({ columns, data }) {
   )
 }
 
-function App() {
-  const getEvents = "http://localhost:5000/users/events";
+function App ({events}) {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Event Name',
+        Header: 'Event Title',
         columns: [
           {
-            Header: 'First Name',
-            accessor: 'firstName',
+            Header: 'Event Name',
+            accessor: 'eventName',
           },
           {
-            Header: 'Last Name',
-            accessor: 'lastName',
+            Header: 'Location',
+            accessor: 'location',
           },
         ],
       },
@@ -86,20 +85,20 @@ function App() {
         Header: 'Info',
         columns: [
           {
-            Header: 'Age',
-            accessor: 'age',
+            Header: 'Organization',
+            accessor: 'org',
           },
           {
-            Header: 'Visits',
-            accessor: 'visits',
+            Header: 'Date',
+            accessor: 'date',
           },
           {
-            Header: 'Status',
-            accessor: 'status',
+            Header: 'Description',
+            accessor: 'desc',
           },
           {
-            Header: 'Profile Progress',
-            accessor: 'progress',
+            Header: 'Comments',
+            accessor: 'comments',
           },
         ],
       },
@@ -108,6 +107,20 @@ function App() {
   )
 
   const data = React.useMemo(() => makeData(20), [])
+  if (events[0] === null) {
+    return (
+      <div>
+      <Logout />
+      <button className='orgs_button' onClick={() => {window.location = '/orgs'}}>
+        Find Universities and organizations
+      </button>
+      <h1 className='h1'>EVENTS</h1>
+      <CreateEvent className='middlecolumn'/>
+      <CssBaseline />
+      No Events to Display, go join a University or Organization!
+    </div>
+    )
+  }
 
   return (
     <div>
@@ -123,4 +136,41 @@ function App() {
   )
 }
 
-export default App
+class Events extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      events: [],
+      loading: false
+    }
+  }
+
+  componentDidMount() {
+    this.setState({loading: true});
+    getEventData(events => {
+      this.setState({events: events});
+    })
+    this.setState({loading: false});
+  }
+
+  render(): React.Node {
+    if (this.state.loading)
+    {
+      return (
+        <>
+          <br/><br/><br/><br/>
+
+          <img style={this.spinnerStyle} src="/spinner.gif" alt=""/>
+
+        </>
+      )
+    }
+    else {
+      return (
+        <App events={this.state.events} />
+      )
+    }
+  }
+}
+
+export default Events

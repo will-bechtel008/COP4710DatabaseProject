@@ -32,7 +32,7 @@ function Table({ columns, data }) {
     columns,
     data,
   })
-  
+
   // Render the UI for your table
   return (
     <MaUTable {...getTableProps()}>
@@ -107,10 +107,10 @@ function Orgs() {
     ],
     []
     )
-    
+
     const data = React.useMemo(() => makeData(20), [])
     const getOrgs = "http://localhost:5000/users/organizations";
-    
+
     return (
       <div>
         <Logout />

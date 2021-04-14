@@ -105,7 +105,9 @@ class CreateEvent extends React.Component {
         else
         {
         return (
-            <div></div>
+            <div>
+                <br/><br/><br/><br/><br/><br/>
+            </div>
         )
         }
     }
