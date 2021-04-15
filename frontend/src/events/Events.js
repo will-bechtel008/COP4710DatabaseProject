@@ -106,8 +106,8 @@ function App ({events}) {
     []
   )
 
-  const data = React.useMemo(() => makeData(20), [])
-  if (events[0] === null) {
+  console.log("length: ", events.length)
+  const data = React.useMemo(() => makeData(events.length), [])
     return (
       <div>
       <Logout />
@@ -117,23 +117,9 @@ function App ({events}) {
       <h1 className='h1'>EVENTS</h1>
       <CreateEvent className='middlecolumn'/>
       <CssBaseline />
-      No Events to Display, go join a University or Organization!
+      {events.length === 0 ? <h5>No Events to Display, go join a University or Organization!</h5> : <Table columns={columns} data={data} />}
     </div>
     )
-  }
-
-  return (
-    <div>
-      <Logout />
-      <button className='orgs_button' onClick={() => {window.location = '/orgs'}}>
-        Find Universities and organizations
-      </button>
-      <h1 className='h1'>EVENTS</h1>
-      <CreateEvent className='middlecolumn'/>
-      <CssBaseline />
-      <Table columns={columns} data={data} />
-    </div>
-  )
 }
 
 class Events extends React.Component {
@@ -145,31 +131,29 @@ class Events extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({loading: true});
-    getEventData(events => {
-      this.setState({events: events});
-    })
-    this.setState({loading: false});
-  }
+    componentDidMount(): void {
+      this.setState({loading: true});
+      const userid = localStorage.getItem('login_token');
+      axios.post("http://localhost:5000/users/events", {userid: userid})
+        .then(res => {
+          const events = res.data.Events;
+          this.setState({events: events});
+          console.log("events: ", this.state.events)
+          this.setState({loading: false});
+      });
+    }
 
   render(): React.Node {
-    if (this.state.loading)
-    {
+    if (this.state.loading) {
       return (
-        <>
-          <br/><br/><br/><br/>
-
-          <img style={this.spinnerStyle} src="/spinner.gif" alt=""/>
-
-        </>
+        <div>Loading data...</div>
       )
-    }
+    }  
     else {
       return (
-        <App events={this.state.events} />
-      )
-    }
+          <App events={this.state.events} />
+        )
+      }
   }
 }
 

@@ -21,6 +21,10 @@ var rsoSchema = new Schema({
     members: {
         type: [{type: ObjectId}],
     },
+    activated: {
+        type: String,
+        default: "INACTIVE"
+    },
 });
 
 const RSO = mongoose.model('Rso', rsoSchema);

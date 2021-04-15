@@ -92,9 +92,15 @@ router.post("/login", async (req, res) => {
 // get organizations
 router.post("/organizations", async (req, res) => {
   try {
+    // arrays
+    let rsos = []
+    let universities = []
+
     // search for user information
-    const rsos = await RSO.find();
-    const universities = await University.find();
+    rsos = await RSO.find();
+    universities = await University.find();
+
+    orgs = (rsos.concat(universities))
 
    // return user data
    // return savings data
@@ -103,6 +109,7 @@ router.post("/organizations", async (req, res) => {
      {
         rsos: rsos, 
         universities: universities, 
+        orgs: orgs,
      });
 
     // error handling
@@ -119,12 +126,12 @@ router.post("/events", async (req, res) => {
     // get user data
     const user = await User.findById(userid);
 
-    let university = null
-    let rso = null
-    let publicEvents = null
-    let privateEvents = null
-    let rsoEvents = null
-    let EventData = null
+    let university = []
+    let rso = []
+    let publicEvents = []
+    let privateEvents = []
+    let rsoEvents = []
+    let EventData = []
 
     // log users uni and rso
     console.log(user.university)
