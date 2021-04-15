@@ -9,7 +9,6 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { useTable } from 'react-table'
-import makeData from './makeData'
 import axios from 'axios'
 
 // Create Event Component
@@ -65,7 +64,32 @@ function Table({ columns, data }) {
   )
 }
 
-function App ({events}) {
+const newEvent = (event) => {
+  return {
+    eventName: event.eventName,
+    location: event.location,
+    org: event.org,
+    date: event.date,
+    desc: event.desc,
+    comments: 'pending'
+  }
+}
+
+function makeData(events, lens) {
+  const makeDataLevel = (depth = 0) => {
+    const len = lens[depth]
+    return events.map(event=> {
+      return {
+        ...newEvent(event),
+        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
+      }
+    })
+  }
+
+  return makeDataLevel()
+}
+
+function EventTable ({events}) {
   const columns = React.useMemo(
     () => [
       {
@@ -107,7 +131,7 @@ function App ({events}) {
   )
 
   console.log("length: ", events.length)
-  const data = React.useMemo(() => makeData(events.length), [])
+  const data = React.useMemo(() => makeData(events, events.length), [])
     return (
       <div>
       <Logout />
@@ -148,10 +172,10 @@ class Events extends React.Component {
       return (
         <div>Loading data...</div>
       )
-    }  
+    }
     else {
       return (
-          <App events={this.state.events} />
+          <EventTable events={this.state.events} />
         )
       }
   }
