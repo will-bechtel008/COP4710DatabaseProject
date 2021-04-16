@@ -13,6 +13,7 @@ router.post("/add", async (req, res) => {
       // variables
       const userid = req.body.userid;
       const name = req.body.name;
+      const location = req.body.location;
       const id = mongoose.Types.ObjectId();
 
       // check for user
@@ -37,7 +38,7 @@ router.post("/add", async (req, res) => {
         return res.json('RSO already exists.')
 
       // create new rso
-      const newRSO = new RSO({ _id: id, name});
+      const newRSO = new RSO({ _id: id, name, location});
 
       // saves new rso
       newRSO.save()
@@ -66,6 +67,9 @@ router.post("/join", async (req, res) => {
     // variables
     const userid = req.body.userid;
     const rsoid = req.body.rsoid;
+    let leaveRSO = null
+    let joinRSO = null
+    let changeStatus = null
 
     // check for user
     const user = await User.findOne({ _id: userid });
@@ -86,19 +90,32 @@ router.post("/join", async (req, res) => {
     // if user doest not exist
     if (!rsoExists)
       return res.json('Rso does not exists.')
-    
-    // updates user info
-    const updateUser = await User.findByIdAndUpdate((userid), {rso: rsoid})
 
     // member data
     const memberData = ObjectId(userid);
 
-    // updates rso info
-    const updateRSO = await RSO.findByIdAndUpdate((rsoid), {$push: {members: memberData }});
+    // leaving rso
+    if (user.rso)
+      leaveRSO = await RSO.findByIdAndUpdate((user.rso), {$pull: {members: memberData }});
 
-    // join rso message
-    if (updateUser && updateRSO)
-      res.json('User has joined rso.')
+    // updates user info
+    const updateUser = await User.findByIdAndUpdate((userid), {rso: rsoid})
+
+    // updates rso info
+    const updateRSOMembers = await RSO.findByIdAndUpdate((rsoid), {$push: {members: memberData }});
+
+    // rso info
+    const rsoInfo = await RSO.findById({ _id: rsoid });
+
+    // activate rso
+    if (rsoInfo.members.length >= 5)
+      changeStatus = await RSO.findByIdAndUpdate((rsoid), {activated: "ACTIVE"});
+
+    // deactivate rso
+    if (rsoInfo.members.length < 5)
+      changeStatus = await RSO.findByIdAndUpdate((rsoid), {activated: "INACTIVE"});
+
+    res.json(rsoInfo.members)
 
     // error handling
   } catch (err) {

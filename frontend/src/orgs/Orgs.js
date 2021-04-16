@@ -1,4 +1,5 @@
 import React from 'react';
+import {useState} from 'react'
 import './Orgs.css'
 import Logout from '../login/Logout'
 
@@ -16,22 +17,35 @@ import TableRow from '@material-ui/core/TableRow'
 
 import { useTable } from 'react-table'
 
-import makeData from '../events/makeData'
-
-
-const getOrgData = async () => {
-  const getOrgs = "http://localhost:5000/users/organizations";
-  const orgs = await axios.post(getOrgs, {});
-  console.log("ORGS", orgs.data)
-  return orgs.data;
-}
-
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const { getTableProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
   })
+
+  console.log(rows)
+
+  const onJoinClick = (id, type) => {
+    const userid = localStorage.getItem('login_token');
+    const uni = 'http://localhost:5000/university/join';
+    const rso = 'http://localhost:5000/rso/join';
+    let path = '';
+    if (type === 'University' || type === 'uni')  {
+      path = uni;
+    }
+    else {
+      path = rso;
+    }
+    axios.post(path, {userid: userid, universityid: id})
+      .then(res => {
+        console.log(res);
+      })
+  }
+
+  const onMapClick = () => {
+    console.log("yeah");
+  }
 
   // Render the UI for your table
   return (
@@ -52,6 +66,7 @@ function Table({ columns, data }) {
           prepareRow(row)
           return (
             <TableRow {...row.getRowProps()}>
+              {console.log(row)}
               {row.cells.map(cell => {
                 return (
                   <TableCell {...cell.getCellProps()}>
@@ -59,6 +74,8 @@ function Table({ columns, data }) {
                   </TableCell>
                 )
               })}
+              <button onClick={() => onJoinClick(row.values._id, row.values.orgType)}> Join </button>
+              <button onClick={() => onMapClick(row.values._id)}> Map </button>
             </TableRow>
           )
         })}
@@ -67,19 +84,43 @@ function Table({ columns, data }) {
   )
 }
 
-function Orgs() {
+const newOrg = (org) => {
+  return {
+    orgName: org.name,
+    orgType: org.orgType,
+    desc: org.desc,
+    location: org.location,
+    _id: org._id
+  }
+}
+
+function makeData(orgs, lens) {
+  const makeDataLevel = (depth = 0) => {
+    const len = lens[depth]
+    return orgs.map(org => {
+      return {
+        ...newOrg(org),
+        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
+      }
+    })
+  }
+
+  return makeDataLevel()
+}
+
+function OrgTable({orgs}) {
   const columns = React.useMemo(
     () => [
       {
         Header: 'Name',
         columns: [
           {
-            Header: 'First Name',
-            accessor: 'firstName',
+            Header: 'Organization Name',
+            accessor: 'orgName',
           },
           {
-            Header: 'Last Name',
-            accessor: 'lastName',
+            Header: 'University or Rso',
+            accessor: 'orgType',
           },
         ],
       },
@@ -87,20 +128,12 @@ function Orgs() {
         Header: 'Info',
         columns: [
           {
-            Header: 'Age',
-            accessor: 'age',
+            Header: 'Coordinates',
+            accessor: 'location',
           },
           {
-            Header: 'Visits',
-            accessor: 'visits',
-          },
-          {
-            Header: 'Status',
-            accessor: 'status',
-          },
-          {
-            Header: 'Profile Progress',
-            accessor: 'progress',
+            Header: 'ID',
+            accessor: '_id',
           },
         ],
       },
@@ -108,12 +141,13 @@ function Orgs() {
     []
     )
 
-    const data = React.useMemo(() => makeData(20), [])
-    const getOrgs = "http://localhost:5000/users/organizations";
-
+    const data = React.useMemo(() => makeData(orgs, orgs.length), [])
     return (
       <div>
         <Logout />
+        <button className='orgs_button' onClick={() => {window.location = '/events'}}>
+        Back
+      </button>
       <h1 className='h1'>Universities and Organizations</h1>
       {/* <CreateOrg className='middlecolumn'/> */}
       <br/><br/><br/><br/><br/><br/>
@@ -121,6 +155,40 @@ function Orgs() {
       <Table columns={columns} data={data} />
     </div>
   )
+}
+
+class Orgs extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      orgs: [],
+      loading: false
+    }
+  }
+
+  componentDidMount(): void {
+    this.setState({loading: true});
+    axios.post("http://localhost:5000/users/organizations")
+      .then(res => {
+        const orgs = res.data.orgs;
+        this.setState({orgs: orgs});
+        console.log('orgs: ', this.state.orgs)
+        this.setState({loading: false});
+      });
+  }
+
+  render(): React.Node {
+    if (this.state.loading) {
+      return (
+        <div>Loading data...</div>
+      )
+    }
+    else {
+      return (
+        <OrgTable orgs={this.state.orgs}/>
+      )
+    }
+  }
 }
 
 export default Orgs

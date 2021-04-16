@@ -37,6 +37,11 @@ const universitySchema = new Schema({
     students: {
         type: [{type: ObjectId}],
     },
+
+    orgType: {
+        type: String,
+        default: 'University'
+    }
 });
 
 const University = mongoose.model('University', universitySchema);

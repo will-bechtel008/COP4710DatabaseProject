@@ -30,6 +30,21 @@ function Table({ columns, data }) {
     data,
   })
 
+  const onMapClick = (lat, lng, name) => {
+    localStorage.setItem('lat', lat);
+    localStorage.setItem('lng', lng);
+    localStorage.setItem('eventName', name);
+
+    window.location = '/Map';
+  }
+
+  const onCommentClick = (comments, name) => {
+    localStorage.setItem('comments', comments);
+    localStorage.setItem('eventName', name);
+
+    window.location = '/comments';
+  }
+
   // Render the UI for your table
   return (
     <MaUTable {...getTableProps()}>
@@ -56,6 +71,8 @@ function Table({ columns, data }) {
                   </TableCell>
                 )
               })}
+              <button onClick={() => onMapClick(row.values.lat, row.values.lng, row.values.eventName)}> Map </button>
+              <button onClick={() => onCommentClick(row.values.comments, row.values.eventName)}> Comments </button>
             </TableRow>
           )
         })}
@@ -71,7 +88,9 @@ const newEvent = (event) => {
     org: event.org,
     date: event.date,
     desc: event.desc,
-    comments: 'pending'
+    lat: event.lat,
+    lng: event.lng,
+    comments: event.comments,
   }
 }
 
@@ -121,8 +140,12 @@ function EventTable ({events}) {
             accessor: 'desc',
           },
           {
-            Header: 'Comments',
-            accessor: 'comments',
+            Header: 'Latitude',
+            accessor: 'lat',
+          },
+          {
+            Header: 'Longitude',
+            accessor: 'lng',
           },
         ],
       },
@@ -130,7 +153,6 @@ function EventTable ({events}) {
     []
   )
 
-  console.log("length: ", events.length)
   const data = React.useMemo(() => makeData(events, events.length), [])
     return (
       <div>
@@ -141,7 +163,7 @@ function EventTable ({events}) {
       <h1 className='h1'>EVENTS</h1>
       <CreateEvent className='middlecolumn'/>
       <CssBaseline />
-      {events.length === 0 ? <h5>No Events to Display, go join a University or Organization!</h5> : <Table columns={columns} data={data} />}
+      {events.length === 0 ? <h5>No Events to Display, go join a University or Organization if you have not already!</h5> : <Table columns={columns} data={data} />}
     </div>
     )
 }
@@ -176,8 +198,8 @@ class Events extends React.Component {
     else {
       return (
           <EventTable events={this.state.events} />
-        )
-      }
+      )
+    }
   }
 }
 

@@ -15,10 +15,10 @@ type State = {|
     |};
 
 
-async function createNewEvent(userid, eventType, eventName, desc, date) {
+async function createNewEvent(userid, eventType, eventName, desc, date, lat, lng) {
     try {
         const postReq = 'http://localhost:5000/event/add';
-        const newEvent = await axios.post(postReq, {userid, eventType, eventName, desc, date});
+        const newEvent = await axios.post(postReq, {userid, eventType, eventName, desc, date, lat, lng});
         console.log(newEvent);
         return newEvent;
     }
@@ -35,12 +35,14 @@ class CreateEvent extends React.Component {
             eventName:'',
             desc: '',
             date:'',
+            lat: 0,
+            lng: 0,
             eventDialogOpen: false
         }
     }
 
     handleCreateEventClick(): void {
-        createNewEvent(localStorage.getItem('login_token'), this.state.eventType, this.state.eventName, this.state.desc, this.state.date);
+        createNewEvent(localStorage.getItem('login_token'), this.state.eventType, this.state.eventName, this.state.desc, this.state.date, this.state.lat, this.state.lng);
         window.location.reload();
 	};
 
@@ -89,11 +91,16 @@ class CreateEvent extends React.Component {
                                     <option value='rso_event'>RSO Event</option>
                                 </select>
 
+                                <label className='label'>Latitude:</label>
+                                <input type='text' placeholder='lat' value={this.state.lat} onChange={e => this.setState({lat: e.target.value})}/>
+                                <label className='label'>Longitude</label>
+                                <input type='text' placeholder='lng' value={this.state.lng} onChange={e => this.setState({lng: e.target.value})}/>
 
                                 <label className='label'>Event Description:</label>
                                 <input type='text' placeholder='Description' value={this.state.desc} onChange={e => this.setState({desc: e.target.value})}/>
                             </div>
                             <div className="row col-md-12">
+                            <br/><br/><br/>
                                 {createEventButton}
                                 {cancelButton}
                             </div>

@@ -17,6 +17,8 @@ router.post("/add", async (req, res) => {
         const eventName = req.body.eventName;
         const desc = req.body.desc;
         const date = req.body.date;
+        const longitude = req.body.longitude;
+        const latitude = req.body.latitude;
         const id = mongoose.Types.ObjectId();
 
         // check for user
@@ -26,6 +28,12 @@ router.post("/add", async (req, res) => {
         if (!user)
             return res.json('User does not exist.')
         
+        // scheduling conflict
+        const conflict = await Event.find({date: date})
+        if (conflict) {
+            return res.json('Scheduling Conflict')
+        }
+
         // save usertype
         const userType = user.type;
 
@@ -67,7 +75,7 @@ router.post("/add", async (req, res) => {
             const userUniversity = await University.findOne({ _id: user.university })
             
             // create new event
-            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userUniversity.name});
+            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userUniversity.name, longitude, latitude});
 
             // saves event
             newEvent.save()
@@ -82,7 +90,7 @@ router.post("/add", async (req, res) => {
             const userUniversity = await University.findOne({ _id: user.university })
             
             // create new event
-            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userUniversity.name});
+            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userUniversity.name, longitude, latitude});
 
             // saves event
             newEvent.save()
@@ -97,7 +105,7 @@ router.post("/add", async (req, res) => {
             const userRSO = await RSO.findOne({ _id: user.rso })
     
             // create new event
-            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userRSO.name});
+            const newEvent = new Event({ _id: id, eventName, desc, date, eventType, org: userRSO.name, longitude, latitude});
 
             // saves event
             newEvent.save()

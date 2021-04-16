@@ -21,10 +21,18 @@ var rsoSchema = new Schema({
     members: {
         type: [{type: ObjectId}],
     },
+    location: {
+        type: String,
+        required: true
+    },
     activated: {
         type: String,
         default: "INACTIVE"
     },
+    orgType: {
+        type: String,
+        default: 'Rso'
+    }
 });
 
 const RSO = mongoose.model('Rso', rsoSchema);
