@@ -44,6 +44,7 @@ export default function App() {
                       <Route exact path = "/register" component = {Register} />
                       <Route exact path = "/events" component = {Events} />
                       <Route exact path = "/orgs" component = {Orgs} />
+                      <Route exact path = "/Map" component = {Map} />
                   </Switch>
           </UserSession.Provider>
       </BrowserRouter>

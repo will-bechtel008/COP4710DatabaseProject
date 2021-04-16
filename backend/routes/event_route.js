@@ -28,11 +28,11 @@ router.post("/add", async (req, res) => {
         if (!user)
             return res.json('User does not exist.')
         
-        // scheduling conflict
-        const conflict = await Event.find({date: date})
-        if (conflict) {
-            return res.json('Scheduling Conflict')
-        }
+        // // scheduling conflict
+        // const conflict = await Event.find({date: date})
+        // if (conflict) {
+        //     return res.json('Scheduling Conflict')
+        // }
 
         // save usertype
         const userType = user.type;

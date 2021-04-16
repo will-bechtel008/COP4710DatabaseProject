@@ -15,24 +15,30 @@ type State = {|
     |};
 
 
-async function createNewOrg(userid, orgType, orgName, lat, lng) {
+async function createNewUni(userid, name, location, desc) {
     try {
-        const uni = 'http://localhost:5000/university/add';
-        const rso = 'http://localhost:5000/rso/add';
-        let path = '';
-        if (orgType === 'uni') {
-            path = uni;
-        }
-        else {
-            path = rso;
-        }
-        const newOrg = await axios.post(path, {userid, orgType, orgName, lat, lng});
-        console.log(newOrg);
+        console.log("createNewUni")
+        const path = 'http://localhost:5000/university/add';
+        const newOrg = await axios.post(path, {userid, name, location, desc});
+        console.log("new org: ", newOrg)
         return newOrg;
     }
     catch (err) {
     };
 }
+
+
+async function createNewRso(userid, name, location) {
+    try {
+        const path = 'http://localhost:5000/rso/add';
+        const newOrg = await axios.post(path, {userid, name, location});
+        console.log("new org: ", newOrg)
+        return newOrg;
+    }
+    catch (err) {
+    };
+}
+
 class CreateOrg extends React.Component {
 
     constructor() {
@@ -41,15 +47,22 @@ class CreateOrg extends React.Component {
         this.state = {
             orgType: '',
             orgName:'',
+            location: '',
             desc: '',
-            lat: 0,
-            lng: 0,
             orgDialogOpen: false
         }
     }
 
     handleCreateOrgClick(): void {
-        createNewOrg(localStorage.getItem('login_token'), this.state.orgType, this.state.orgName, this.state.lat, this.state.lng);
+        console.log(this.state.orgName);
+        console.log(this.state.location);
+        console.log(this.state.desc);
+        console.log(this.state.orgType);
+        if (this.state.orgType === 'uni')
+            createNewUni(localStorage.getItem('login_token'), this.state.orgName, this.state.location, this.state.desc);
+        else {
+            createNewRso(localStorage.getItem('login_token'), this.state.orgName, this.state.location)
+        }
         window.location.reload();
 	};
 
@@ -79,7 +92,7 @@ class CreateOrg extends React.Component {
                         Create a New Organization Here!
                     </button>
                     <Popup
-                        open={this.state.eventDialogOpen}
+                        open={this.state.orgDialogOpen}
                         onClose={() => this.handleCancelClick()}
                     >
                         <div className='popup'>
@@ -89,18 +102,13 @@ class CreateOrg extends React.Component {
                                 <input type='text' placeholder='Organization Name' value={this.state.orgName} onChange={e => this.setState({orgName: e.target.value})}/>
 
                                 <label className='label'>Type of Organization:</label>
-                                <select placeholder='University or Rso' value={this.state.orgType} onChange={e => this.setState({orgType: e.target.value})}>
-                                    <option value='uni'>University</option>
-                                    <option value='rso'>RSO</option>
-                                </select>
+                                {userType === 'superadmin' ? <select placeholder='University' value={this.state.orgType} onChange={e => this.setState({orgType: e.target.value})}> <option value=''>default</option><option value='uni'>University</option> </select> : <select placeholder='Rso' value={this.state.orgType} onChange={e => this.setState({orgType: e.target.value})}> <option value=''>default</option><option value='rso'>RSO</option> </select>}
 
-                                <label className='label'>Latitude:</label>
-                                <input type='text' placeholder='lat' value={this.state.lat} onChange={e => this.setState({lat: e.target.value})}/>
-                                <label className='label'>Longitude</label>
-                                <input type='text' placeholder='lng' value={this.state.lng} onChange={e => this.setState({lng: e.target.value})}/>
+                                {userType === 'superadmin' ? <label className='label'>University Description:</label>  : <br/>}
+                                {userType === 'superadmin' ? <input type='text' placeholder='Description' value={this.state.desc} onChange={e => this.setState({desc: e.target.value})}/> : <br/>}
 
-                                {/* <label className='label'>Organization Description:</label>
-                                <input type='text' placeholder='Description' value={this.state.desc} onChange={e => this.setState({desc: e.target.value})}/> */}
+                                <label className='label'>Location:</label>
+                                <input type='text' placeholder='City, State' value={this.state.location} onChange={e => this.setState({location: e.target.value})}/>
                             </div>
                             <div className="row col-md-12">
                                 {createOrgButton}

@@ -15,14 +15,6 @@ import axios from 'axios'
 import CreateEvent from './CreateEvent';
 import Map from './Map.js'
 
-const getEventData = async () => {
-  const userid = localStorage.getItem('login_token');
-  const getEvents =  "http://localhost:5000/users/events";
-  const events = await axios.post(getEvents, {userid: userid});
-  console.log("EVENT DATA1", events.data.Events)
-  return events.data.Events;
-}
-
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const { getTableProps, headerGroups, rows, prepareRow } = useTable({

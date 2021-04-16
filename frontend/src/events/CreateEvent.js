@@ -15,11 +15,11 @@ type State = {|
     |};
 
 
-async function createNewEvent(userid, eventType, eventName, desc, date, lat, lng) {
+async function createNewEvent(userid, eventType, eventName, desc, date, latitude, longitude) {
     try {
         const postReq = 'http://localhost:5000/event/add';
-        const newEvent = await axios.post(postReq, {userid, eventType, eventName, desc, date, lat, lng});
-        console.log(newEvent);
+        const newEvent = await axios.post(postReq, {userid, eventType, eventName, desc, date, longitude, latitude});
+        console.log('newEvent: ', newEvent);
         return newEvent;
     }
     catch (err) {
@@ -35,8 +35,8 @@ class CreateEvent extends React.Component {
             eventName:'',
             desc: '',
             date:'',
-            lat: 0,
-            lng: 0,
+            lat: '',
+            lng: '',
             eventDialogOpen: false
         }
     }
@@ -86,6 +86,7 @@ class CreateEvent extends React.Component {
 
                                 <label className='label'>Type of Event:</label>
                                 <select placeholder='i.e. Pulbic, Private...' value={this.state.eventType} onChange={e => this.setState({eventType: e.target.value})}>
+                                    <option value=''>Default</option>
                                     <option value='public_event'>Public Event</option>
                                     <option value='private_event'>Private Event</option>
                                     <option value='rso_event'>RSO Event</option>

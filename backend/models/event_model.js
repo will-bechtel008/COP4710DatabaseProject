@@ -47,7 +47,6 @@ const eventSchema = new Schema({
     // date of event
     date: {
         type: Date,
-        default: Date.now()
     },
 
     // location of event, see geoSchema
@@ -66,6 +65,12 @@ const eventSchema = new Schema({
 
     org: {
         type: String,
+    },
+    latitude: {
+        type: Number,
+    },
+    longitude: {
+        type: Number,
     }
 });
 

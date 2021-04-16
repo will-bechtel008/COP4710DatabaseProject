@@ -43,10 +43,6 @@ function Table({ columns, data }) {
       })
   }
 
-  const onMapClick = () => {
-    console.log("yeah");
-  }
-
   // Render the UI for your table
   return (
     <MaUTable {...getTableProps()}>
@@ -75,7 +71,6 @@ function Table({ columns, data }) {
                 )
               })}
               <button onClick={() => onJoinClick(row.values._id, row.values.orgType)}> Join </button>
-              <button onClick={() => onMapClick(row.values._id)}> Map </button>
             </TableRow>
           )
         })}
@@ -88,8 +83,9 @@ const newOrg = (org) => {
   return {
     orgName: org.name,
     orgType: org.orgType,
-    desc: org.desc,
     location: org.location,
+    desc: org.desc,
+    activated: org.activated,
     _id: org._id
   }
 }
@@ -128,8 +124,16 @@ function OrgTable({orgs}) {
         Header: 'Info',
         columns: [
           {
-            Header: 'Coordinates',
+            Header: 'Location',
             accessor: 'location',
+          },
+          {
+            Header: 'Description',
+            accessor: 'desc',
+          },
+          {
+            Header: 'Status',
+            accessor: 'activated',
           },
           {
             Header: 'ID',
@@ -149,8 +153,7 @@ function OrgTable({orgs}) {
         Back
       </button>
       <h1 className='h1'>Universities and Organizations</h1>
-      {/* <CreateOrg className='middlecolumn'/> */}
-      <br/><br/><br/><br/><br/><br/>
+      <CreateOrg className='middlecolumn'/>
       <CssBaseline />
       <Table columns={columns} data={data} />
     </div>
@@ -173,6 +176,7 @@ class Orgs extends React.Component {
         const orgs = res.data.orgs;
         this.setState({orgs: orgs});
         console.log('orgs: ', this.state.orgs)
+        console.log('userid: ', localStorage.getItem('login_token'))
         this.setState({loading: false});
       });
   }
