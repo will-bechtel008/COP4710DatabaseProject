@@ -6,6 +6,7 @@ import Register from './login/Register.js'
 import Events from './events/Events.js'
 import Orgs from './orgs/Orgs.js'
 import Map from './events/Map.js'
+import Comments from './events/Comments.js'
 import UserSession from './session/UserSession';
 import Axios from 'axios'
 
@@ -45,6 +46,7 @@ export default function App() {
                       <Route exact path = "/events" component = {Events} />
                       <Route exact path = "/orgs" component = {Orgs} />
                       <Route exact path = "/Map" component = {Map} />
+                      <Route exact path = "/comments" component = {Comments} />
                   </Switch>
           </UserSession.Provider>
       </BrowserRouter>

@@ -30,9 +30,9 @@ function Table({ columns, data }) {
     window.location = '/Map';
   }
 
-  const onCommentClick = (comments, name) => {
-    localStorage.setItem('comments', comments);
+  const onCommentClick = (id, name) => {
     localStorage.setItem('eventName', name);
+    localStorage.setItem('eventid', id);
 
     window.location = '/comments';
   }
@@ -64,7 +64,8 @@ function Table({ columns, data }) {
                 )
               })}
               <button onClick={() => onMapClick(row.values.lat, row.values.lng, row.values.eventName)}> Map </button>
-              <button onClick={() => onCommentClick(row.values.comments, row.values.eventName)}> Comments </button>
+              <button onClick={() => onCommentClick(row.values.id, row.values.eventName)}> Comments </button>
+              {/* <button onClick={() => console.log(row)}> test </button> */}
             </TableRow>
           )
         })}
@@ -74,15 +75,17 @@ function Table({ columns, data }) {
 }
 
 const newEvent = (event) => {
+  let x = String(event.latitude);
+  let y = String(event.longitude);
   return {
     eventName: event.eventName,
     location: event.location,
     org: event.org,
     date: event.date,
     desc: event.desc,
-    lat: event.lat,
-    lng: event.lng,
-    comments: event.comments,
+    lat: x,
+    lng: y,
+    id: event._id
   }
 }
 
@@ -139,6 +142,10 @@ function EventTable ({events}) {
             Header: 'Longitude',
             accessor: 'lng',
           },
+          {
+            Header: 'ID',
+            accessor: 'id',
+          },
         ],
       },
     ],
@@ -170,13 +177,13 @@ class Events extends React.Component {
   }
 
     componentDidMount(): void {
+      console.log(localStorage.getItem('login_token'))
       this.setState({loading: true});
       const userid = localStorage.getItem('login_token');
       axios.post("http://localhost:5000/users/events", {userid: userid})
         .then(res => {
           const events = res.data.Events;
           this.setState({events: events});
-          console.log("events: ", this.state.events)
           this.setState({loading: false});
       });
     }

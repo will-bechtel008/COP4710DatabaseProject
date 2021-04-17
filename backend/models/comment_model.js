@@ -22,7 +22,8 @@ const commentSchema = new Schema({
     },
 
     rating: {
-        type: Number
+        type: Number,
+        default: 0,
     },
 
     timestamp: {

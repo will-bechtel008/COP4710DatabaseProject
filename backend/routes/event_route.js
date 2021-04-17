@@ -8,6 +8,22 @@ const Event = require("../models/event_model.js");
 const User = require("../models/user_model.js");
 const University = require("../models/university_model.js");
 
+router.post("/get", async (req, res) => {
+    try {
+        // eventid
+        const eventid = req.body.eventid;
+
+        const event = await Event.findOne({_id: eventid});
+
+        // requires eventid
+        if (!event)
+            return res.json('Event does not exist.');
+
+        res.json(event);
+    }
+    catch (err) {};
+})
+
 // add public event to university
 router.post("/add", async (req, res) => {
     try {

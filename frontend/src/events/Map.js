@@ -13,13 +13,17 @@ class Map extends Component {
   };
  
   render() {
+    const lat = localStorage.getItem('lat');
+    const lng = localStorage.getItem('lat')
+    const center = {lat, lng};
+    console.log('center?: ', center);
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
-      <button onClick={() => window.locaiton = '/events'}>Back</button>
+      <button onClick={() => window.location = '/events'}>Back</button>
         <GoogleMapReact
           bootstrapURLKeys={{ key: 'AIzaSyBzbNsaHd6QTNZURjZNhy-F5eic3cpkB0Y' }}
-          defaultCenter={this.props.center}
+          defaultCenter={center}
           defaultZoom={this.props.zoom}
         >
           <AnyReactComponent
