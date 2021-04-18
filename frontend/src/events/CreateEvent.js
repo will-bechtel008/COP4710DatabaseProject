@@ -43,7 +43,7 @@ class CreateEvent extends React.Component {
 
     handleCreateEventClick(): void {
         createNewEvent(localStorage.getItem('login_token'), this.state.eventType, this.state.eventName, this.state.desc, this.state.date, this.state.lat, this.state.lng);
-        window.location.reload();
+        // window.location.reload();
 	};
 
     handleCancelClick(): void {

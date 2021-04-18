@@ -79,7 +79,6 @@ const newEvent = (event) => {
   let y = String(event.longitude);
   return {
     eventName: event.eventName,
-    location: event.location,
     org: event.org,
     date: event.date,
     desc: event.desc,
@@ -112,10 +111,6 @@ function EventTable ({events}) {
           {
             Header: 'Event Name',
             accessor: 'eventName',
-          },
-          {
-            Header: 'Location',
-            accessor: 'location',
           },
         ],
       },

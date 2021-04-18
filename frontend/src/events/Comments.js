@@ -29,7 +29,18 @@ function Table({ columns, data, eventid}) {
       }
       catch (err) {};
     }
-  
+    async function onDeleteClick (commentid, text, oldRating) {
+      try {
+          const path = 'http://localhost:5000/comment/delete';
+          const eventid = localStorage.getItem('eventid');
+          const userid = localStorage.getItem('login_token');
+          const newComment = await axios.post(path, {userid, eventid, commentid});
+          window.location.reload();
+      }
+      catch (err) {};
+    }
+
+
     // Render the UI for your table
     return (
       <MaUTable {...getTableProps()}>
@@ -57,6 +68,8 @@ function Table({ columns, data, eventid}) {
                   )
                 })}
                 <button onClick={() => onCommentClick(row.values.id, row.values.text, row.values.rating)}> Like </button>
+                <button onClick={() => onDeleteClick(row.values.id, row.values.text, row.values.rating)}> Delete </button>
+
               </TableRow>
             )
           })}

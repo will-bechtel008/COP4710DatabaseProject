@@ -23,12 +23,12 @@ class Map extends Component {
       <button onClick={() => window.location = '/events'}>Back</button>
         <GoogleMapReact
           bootstrapURLKeys={{ key: 'AIzaSyBzbNsaHd6QTNZURjZNhy-F5eic3cpkB0Y' }}
-          defaultCenter={center}
+          defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
         >
           <AnyReactComponent
-            lat={localStorage.getItem('lat')}
-            lng={localStorage.getItem('lng')}
+            lat={28.6024274}
+            lng={-81.2000599}
             text={localStorage.getItem('eventName')}
           />
         </GoogleMapReact>

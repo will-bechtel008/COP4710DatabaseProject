@@ -33,14 +33,20 @@ function Table({ columns, data }) {
     let path = '';
     if (type === 'University' || type === 'uni')  {
       path = uni;
+      axios.post(path, {userid: userid, universityid: id})
+        .then(res => {
+          console.log(res);
+        })
+        return;
     }
     else {
       path = rso;
+      axios.post(path, {userid: userid, rsoid: id})
+        .then(res => {
+          console.log(res);
+        })
+
     }
-    axios.post(path, {userid: userid, universityid: id})
-      .then(res => {
-        console.log(res);
-      })
   }
 
   // Render the UI for your table
