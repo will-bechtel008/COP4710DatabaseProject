@@ -14,7 +14,7 @@ type State = {|
     eventDialogOpen: boolean
     |};
 
-
+// API call to create a new event
 async function createNewEvent(userid, eventType, eventName, desc, date, latitude, longitude) {
     try {
         const postReq = 'http://localhost:5000/event/add';
@@ -43,7 +43,7 @@ class CreateEvent extends React.Component {
 
     handleCreateEventClick(): void {
         createNewEvent(localStorage.getItem('login_token'), this.state.eventType, this.state.eventName, this.state.desc, this.state.date, this.state.lat, this.state.lng);
-        // window.location.reload();
+        window.location.reload();
 	};
 
     handleCancelClick(): void {
@@ -64,6 +64,7 @@ class CreateEvent extends React.Component {
             </button>
         );
 
+        // Only admins and supers can create events
         if (userType === 'admin' || userType === 'superadmin')
         {
             return (

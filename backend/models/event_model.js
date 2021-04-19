@@ -5,23 +5,6 @@ const Schema = mongoose.Schema;
 const ObjectId = require('mongodb').ObjectId;
 const Comment = require("./comment_model.js");
 
-// Schema of location that contains coordinates
-const GeoSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-
-    type: {
-        type: String,
-        default: "Point"
-    },
-
-    coordinates: {
-        type: [Number],
-        index: "2dsphere"
-    }
-});
 
 /*
 Event
@@ -48,9 +31,6 @@ const eventSchema = new Schema({
     date: {
         type: Date,
     },
-
-    // location of event, see geoSchema
-    location: GeoSchema,
 
     // comments about event
     comments : {

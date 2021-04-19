@@ -76,7 +76,7 @@ router.post("/update", async (req, res) => {
 
         // removed  message
         res.json('Comment has been updated.')
-                
+
     // error handling
     } catch (err) {
     }

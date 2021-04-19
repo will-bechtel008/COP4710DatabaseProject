@@ -49,7 +49,7 @@ function Table({ columns, data }) {
     }
   }
 
-  // Render the UI for your table
+  // Render the UI for the table
   return (
     <MaUTable {...getTableProps()}>
       <TableHead>
@@ -96,6 +96,7 @@ const newOrg = (org) => {
   }
 }
 
+// make data for rows
 function makeData(orgs, lens) {
   const makeDataLevel = (depth = 0) => {
     const len = lens[depth]
@@ -151,6 +152,7 @@ function OrgTable({orgs}) {
     []
     )
 
+    // parse data
     const data = React.useMemo(() => makeData(orgs, orgs.length), [])
     return (
       <div>
@@ -175,6 +177,7 @@ class Orgs extends React.Component {
     }
   }
 
+  // get starting values
   componentDidMount(): void {
     this.setState({loading: true});
     axios.post("http://localhost:5000/users/organizations")
